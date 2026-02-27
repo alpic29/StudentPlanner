@@ -51,4 +51,4 @@ class MainPage(ctk.CTkFrame):
     def _show_assignments(self):
         self.assignments_page.refresh()
         self.assignments_page.tkraise()
-       git remote set-url origin https://github.com/alpic29/StudentPlanner.git
+       
