@@ -20,7 +20,7 @@ class App(ctk.CTk):
         # Container that holds pages
         self.container = ctk.CTkFrame(self, corner_radius=0)
         self.container.pack(fill="both", expand=True)
-
+        
         self.pages = {}
 
         for Page in (SplashPage, LoginPage, SignupPage, MainPage):
@@ -34,7 +34,7 @@ class App(ctk.CTk):
 
         # Start at splash
         self.show_page("SplashPage")
-
+        self.task_service = TaskService()
     def show_page(self, page_name: str):
         frame = self.pages[page_name]
         frame.tkraise()
