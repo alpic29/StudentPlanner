@@ -4,7 +4,7 @@ from pages.splash_page import SplashPage
 from pages.login_page import LoginPage
 from pages.signup_page import SignupPage
 from pages.main_page import MainPage
-
+from backend.task_service import TaskService
 
 class App(ctk.CTk):
     def __init__(self):
