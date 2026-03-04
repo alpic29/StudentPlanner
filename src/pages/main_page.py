@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from pages.dashboard_page import DashboardPage
 from pages.schedule_page import SchedulePage
 from pages.assignments_page import AssignmentsPage
 
@@ -23,11 +24,14 @@ class MainPage(ctk.CTkFrame):
         )
         logo.grid(row=0, column=0, padx=16, pady=(16, 10), sticky="w")
 
+        btn_dashboard = ctk.CTkButton(sidebar, text="Dashboard", command=self._show_dashboard)
+        btn_dashboard.grid(row=1, column=0, padx=16, pady=(8, 8), sticky="ew")
+
         btn_schedule = ctk.CTkButton(sidebar, text="Schedule", command=self._show_schedule)
-        btn_schedule.grid(row=1, column=0, padx=16, pady=(8, 8), sticky="ew")
+        btn_schedule.grid(row=2, column=0, padx=16, pady=(8, 8), sticky="ew")
 
         btn_assignments = ctk.CTkButton(sidebar, text="Assignments", command=self._show_assignments)
-        btn_assignments.grid(row=2, column=0, padx=16, pady=(8, 8), sticky="ew")
+        btn_assignments.grid(row=3, column=0, padx=16, pady=(8, 8), sticky="ew")
 
         btn_logout = ctk.CTkButton(sidebar, text="Log out", fg_color="#444", command=self._logout)
         btn_logout.grid(row=11, column=0, padx=16, pady=16, sticky="ew")
@@ -39,15 +43,23 @@ class MainPage(ctk.CTkFrame):
         self.content.grid_columnconfigure(0, weight=1)
 
         # Internal pages inside main
+        self.dashboard_page = DashboardPage(self.content, app)
+        self.dashboard_page.grid(row=0, column=0, sticky="nsew")
+
         self.schedule_page = SchedulePage(self.content, app)
         self.schedule_page.grid(row=0, column=0, sticky="nsew")
 
         self.assignments_page = AssignmentsPage(self.content, app)
         self.assignments_page.grid(row=0, column=0, sticky="nsew")
 
-        self._show_schedule()
+        self._show_dashboard()
+
+    def _show_dashboard(self):
+        self.dashboard_page.refresh()
+        self.dashboard_page.tkraise()
 
     def _show_schedule(self):
+        self.schedule_page.refresh()
         self.schedule_page.tkraise()
 
     def _show_assignments(self):

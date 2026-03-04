@@ -19,11 +19,13 @@ class SignupPage(ctk.CTkFrame):
 
         self.email = ctk.CTkEntry(card, width=320, placeholder_text="Email")
         self.password = ctk.CTkEntry(card, width=320, placeholder_text="Password", show="•")
+        self.confirm = ctk.CTkEntry(card, width=320, placeholder_text="Confirm Password", show="•")
         self.email.grid(row=2, column=0, padx=24, pady=(0, 10))
         self.password.grid(row=3, column=0, padx=24, pady=(0, 10))
+        self.confirm.grid(row=4, column=0, padx=24, pady=(0, 10))
 
         create_btn = ctk.CTkButton(card, text="Create", width=320, command=self._create)
-        create_btn.grid(row=4, column=0, padx=24, pady=(6, 10))
+        create_btn.grid(row=5, column=0, padx=24, pady=(6, 10))
 
         back_btn = ctk.CTkButton(
             card,
@@ -33,12 +35,26 @@ class SignupPage(ctk.CTkFrame):
             text_color=("#1f6feb", "#4ea1ff"),
             command=lambda: self.app.show_page("LoginPage"),
         )
-        back_btn.grid(row=5, column=0, padx=24, pady=(0, 24))
+        back_btn.grid(row=6, column=0, padx=24, pady=(0, 24))
 
         self.msg = ctk.CTkLabel(card, text="")
-        self.msg.grid(row=6, column=0, padx=24, pady=(0, 18), sticky="w")
+        self.msg.grid(row=7, column=0, padx=24, pady=(0, 18), sticky="w")
 
     def _create(self):
-        # Mock signup
-        self.msg.configure(text="Account created (mock). Returning to login...")
-        self.after(900, lambda: self.app.show_page("LoginPage"))
+        email = self.email.get().strip()
+        password = self.password.get().strip()
+        confirm = self.confirm.get().strip()
+
+        if password != confirm:
+            self.msg.configure(text="Passwords do not match.", text_color="#ff6b6b")
+            return
+
+        ok, message = self.app.auth_service.register(email, password)
+        self.msg.configure(text=message, text_color="#7bd88f" if ok else "#ff6b6b")
+        if not ok:
+            return
+
+        self.email.delete(0, "end")
+        self.password.delete(0, "end")
+        self.confirm.delete(0, "end")
+        self.after(700, lambda: self.app.show_page("LoginPage"))

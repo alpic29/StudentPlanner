@@ -5,6 +5,8 @@ from pages.login_page import LoginPage
 from pages.signup_page import SignupPage
 from pages.main_page import MainPage
 from backend.task_service import TaskService
+from services.auth_service import AuthService
+from services.schedule_service import ScheduleService
 
 class App(ctk.CTk):
     def __init__(self):
@@ -16,6 +18,9 @@ class App(ctk.CTk):
         self.title("Student Planner")
         self.geometry("1000x650")
         self.minsize(900, 600)
+        self.task_service = TaskService()
+        self.auth_service = AuthService()
+        self.schedule_service = ScheduleService()
 
         # Container that holds pages
         self.container = ctk.CTkFrame(self, corner_radius=0)
@@ -34,7 +39,7 @@ class App(ctk.CTk):
 
         # Start at splash
         self.show_page("SplashPage")
-        self.task_service = TaskService()
+
     def show_page(self, page_name: str):
         frame = self.pages[page_name]
         frame.tkraise()

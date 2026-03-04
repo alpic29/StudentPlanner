@@ -45,12 +45,10 @@ class LoginPage(ctk.CTkFrame):
         email = self.email.get().strip()
         pw = self.password.get().strip()
 
-        # MVP auth: accept anything non-empty
-        if not email or not pw:
-            self.error.configure(text="Please enter both email and password.")
+        ok, message = self.app.auth_service.login(email, pw)
+        if not ok:
+            self.error.configure(text=message)
             return
 
         self.error.configure(text="")
-
-        # Route to main app
         self.app.show_page("MainPage")
